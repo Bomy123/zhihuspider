@@ -52,5 +52,6 @@ class ZhihuspiderSpiderMiddleware(object):
         for r in start_requests:
             yield r
 
+
     def spider_opened(self, spider):
         spider.logger.info('Spider opened: %s' % spider.name)

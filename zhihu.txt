@@ -1,0 +1,105 @@
+
+在topics表中增加字段topic_id,解析网页同时解析id，id作为唯一标识
+
+文章类别
+https://www.zhihu.com/node/TopicsPlazzaListV2
+data{
+	method:next
+	params:{"topic_id":833,"offset":20,"hash_id":""}
+}
+
+解析文章小分类时，解析id，id作为唯一标识
+
+<div class="item"><div class="blk">
+<a target="_blank" href="/topic/19555033">
+<img src="https://pic4.zhimg.com/v2-d27ac8c1bf25d09d6c77e70cf089b46b_xs.jpg" alt="魔兽世界">
+<strong>魔兽世界</strong>
+</a>
+<p>魔兽世界（World of Warcraft， WoW ，魔兽…</p>
+
+<a id="t::-1608" href="javascript:;" class="follow meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>
+点开小分类就会有很多文章，data-score字段每一个评论都有，取最后一个作为参数传递
+</div></div>
+https://www.zhihu.com/topic/19562832/hot
+
+data-score=\"4210.42560\
+
+
+start:0
+offset:4211.82493
+
+
+start:0
+offset:4211.33156
+
+start:0
+offset:4210.74251
+
+start:0
+offset:4210.42560
+
+
+回答：
+https://www.zhihu.com/api/v4/questions/68450231/answers?include=data%5B%2A%5D.is_normal%2Cadmin_closed_comment%2Creward_info%2Cis_collapsed%2Cannotation_action%2Cannotation_detail%2Ccollapse_reason%2Cis_sticky%2Ccollapsed_by%2Csuggest_edit%2Ccomment_count%2Ccan_comment%2Ccontent%2Ceditable_content%2Cvoteup_count%2Creshipment_settings%2Ccomment_permission%2Ccreated_time%2Cupdated_time%2Creview_info%2Cquestion%2Cexcerpt%2Crelationship.is_authorized%2Cis_author%2Cvoting%2Cis_thanked%2Cis_nothelp%2Cupvoted_followees%3Bdata%5B%2A%5D.mark_infos%5B%2A%5D.url%3Bdata%5B%2A%5D.author.follower_count%2Cbadge%5B%3F%28type%3Dbest_answerer%29%5D.topics&limit=20&offset=23
+https://www.zhihu.com/api/v4/questions/27837170/answers?include=data%5B%2A%5D.is_normal%2Cadmin_closed_comment%2Creward_info%2Cis_collapsed%2Cannotation_action%2Cannotation_detail%2Ccollapse_reason%2Cis_sticky%2Ccollapsed_by%2Csuggest_edit%2Ccomment_count%2Ccan_comment%2Ccontent%2Ceditable_content%2Cvoteup_count%2Creshipment_settings%2Ccomment_permission%2Ccreated_time%2Cupdated_time%2Creview_info%2Cquestion%2Cexcerpt%2Crelationship.is_authorized%2Cis_author%2Cvoting%2Cis_thanked%2Cis_nothelp%2Cupvoted_followees%3Bdata%5B%2A%5D.mark_infos%5B%2A%5D.url%3Bdata%5B%2A%5D.author.follower_count%2Cbadge%5B%3F%28type%3Dbest_answerer%29%5D.topics&limit=20&offset=23
+https://www.zhihu.com/api/v4/questions/21223279/answers?include=data%5B%2A%5D.is_normal%2Cadmin_closed_comment%2Creward_info%2Cis_collapsed%2Cannotation_action%2Cannotation_detail%2Ccollapse_reason%2Cis_sticky%2Ccollapsed_by%2Csuggest_edit%2Ccomment_count%2Ccan_comment%2Ccontent%2Ceditable_content%2Cvoteup_count%2Creshipment_settings%2Ccomment_permission%2Ccreated_time%2Cupdated_time%2Creview_info%2Cquestion%2Cexcerpt%2Crelationship.is_authorized%2Cis_author%2Cvoting%2Cis_thanked%2Cis_nothelp%2Cupvoted_followees%3Bdata%5B%2A%5D.mark_infos%5B%2A%5D.url%3Bdata%5B%2A%5D.author.follower_count%2Cbadge%5B%3F%28type%3Dbest_answerer%29%5D.topics&limit=20&offset=23
+https://www.zhihu.com/api/v4/questions/63698495/answers?include=data%5B%2A%5D.is_normal%2Cadmin_closed_comment%2Creward_info%2Cis_collapsed%2Cannotation_action%2Cannotation_detail%2Ccollapse_reason%2Cis_sticky%2Ccollapsed_by%2Csuggest_edit%2Ccomment_count%2Ccan_comment%2Ccontent%2Ceditable_content%2Cvoteup_count%2Creshipment_settings%2Ccomment_permission%2Ccreated_time%2Cupdated_time%2Creview_info%2Cquestion%2Cexcerpt%2Crelationship.is_authorized%2Cis_author%2Cvoting%2Cis_thanked%2Cis_nothelp%2Cupvoted_followees%3Bdata%5B%2A%5D.mark_infos%5B%2A%5D.url%3Bdata%5B%2A%5D.author.follower_count%2Cbadge%5B%3F%28type%3Dbest_answerer%29%5D.topics&limit=20&offset=63
+
+https://www.zhihu.com/api/v4/questions/63698495/answers?include=data%5B%2A%5D.is_normal%2Cadmin_closed_comment%2Creward_info%2Cis_collapsed%2Cannotation_action%2Cannotation_detail%2Ccollapse_reason%2Cis_sticky%2Ccollapsed_by%2Csuggest_edit%2Ccomment_count%2Ccan_comment%2Ccontent%2Ceditable_content%2Cvoteup_count%2Creshipment_settings%2Ccomment_permission%2Ccreated_time%2Cupdated_time%2Creview_info%2Cquestion%2Cexcerpt%2Crelationship.is_authorized%2Cis_author%2Cvoting%2Cis_thanked%2Cis_nothelp%2Cupvoted_followees%3Bdata%5B%2A%5D.mark_infos%5B%2A%5D.url%3Bdata%5B%2A%5D.author.follower_count%2Cbadge%5B%3F%28type%3Dbest_answerer%29%5D.topics&limit=20&offset=43&sort_by=default
+
+
+CREATE TABLE `zhihu`.`topics` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NOT NULL,
+  `topic_id` VARCHAR(20) NOT NULL,
+  `url` VARCHAR(150) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC));
+  
+ CREATE TABLE `zhihu`.`class` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `title` VARCHAR(100) NOT NULL DEFAULT '文章分类名称',
+  `class_id` VARCHAR(45) NOT NULL DEFAULT '文章分类id',
+  `url` VARCHAR(150) NOT NULL DEFAULT '文章分类链接',
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC));
+
+  CREATE TABLE `zhihu`.`content` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `title` VARCHAR(100) NOT NULL,
+  `url` VARCHAR(150) NOT NULL,
+  `class_id` VARCHAR(20) NOT NULL,
+  `content_id` VARCHAR(20) NOT NULL,
+  `author` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC));
+  
+  ALTER TABLE `zhihu`.`content` 
+ADD COLUMN `type` VARCHAR(10) NOT NULL AFTER `author`;
+
+
+CREATE TABLE `zhihu`.`special` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `text` MEDIUMTEXT NULL,
+  `content_id` VARCHAR(10) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC));
+  
+  CREATE TABLE `zhihu`.`question` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `text` TEXT(1000) NOT NULL,
+  `question_id` VARCHAR(20) NOT NULL,
+  `content_id` VARCHAR(20) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC));
+  
+ CREATE TABLE `zhihu`.`answer` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `text` MEDIUMTEXT NOT NULL,
+  `author` VARCHAR(45) NULL,
+  `ques_id` VARCHAR(20) NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC));
+
+  ALTER TABLE `zhihu`.`question` 
+CHANGE COLUMN `text` `description` TEXT NOT NULL ;

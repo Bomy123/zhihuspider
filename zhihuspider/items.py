@@ -11,7 +11,7 @@ import scrapy
 class ZhihuspiderItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
-    typy = scrapy.Field()
+    type = scrapy.Field()
     id = scrapy.Field()
     title = scrapy.Field()
     author = scrapy.Field()
