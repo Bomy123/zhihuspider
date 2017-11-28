@@ -2,15 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f16fcb53-aedd-4bd0-b4e3-3bc408d242f4" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/zhihuspider/config.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/1.gif" afterPath="$PROJECT_DIR$/1.gif" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/zhihuspider.iml" afterPath="$PROJECT_DIR$/.idea/zhihuspider.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/zhihuspider/.idea/workspace.xml" afterPath="$PROJECT_DIR$/zhihuspider/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/zhihuspider/config.py" afterPath="$PROJECT_DIR$/zhihuspider/config.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/zhihuspider/items.py" afterPath="$PROJECT_DIR$/zhihuspider/items.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/zhihuspider/middlewares.py" afterPath="$PROJECT_DIR$/zhihuspider/middlewares.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/zhihuspider/pipelines.py" afterPath="$PROJECT_DIR$/zhihuspider/pipelines.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/zhihuspider/settings.py" afterPath="$PROJECT_DIR$/zhihuspider/settings.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/zhihuspider/spiders/login.py" afterPath="$PROJECT_DIR$/zhihuspider/spiders/login.py" />
     </list>
@@ -27,8 +22,8 @@
       <file leaf-file-name="login.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/zhihuspider/spiders/login.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="496">
-              <caret line="118" column="72" lean-forward="false" selection-start-line="118" selection-start-column="65" selection-end-line="118" selection-end-column="72" />
+            <state relative-caret-position="744">
+              <caret line="130" column="77" lean-forward="false" selection-start-line="130" selection-start-column="77" selection-end-line="130" selection-end-column="77" />
               <folding>
                 <element signature="e#24#37#0" expanded="true" />
               </folding>
@@ -39,8 +34,8 @@
       <file leaf-file-name="config.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/zhihuspider/config.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="527">
-              <caret line="17" column="12" lean-forward="false" selection-start-line="17" selection-start-column="4" selection-end-line="17" selection-end-column="19" />
+            <state relative-caret-position="217">
+              <caret line="7" column="28" lean-forward="true" selection-start-line="7" selection-start-column="28" selection-end-line="7" selection-end-column="28" />
               <folding />
             </state>
           </provider>
@@ -49,8 +44,8 @@
       <file leaf-file-name="settings.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/zhihuspider/settings.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1272">
-              <caret line="51" column="30" lean-forward="false" selection-start-line="51" selection-start-column="30" selection-end-line="51" selection-end-column="30" />
+            <state relative-caret-position="2108">
+              <caret line="68" column="0" lean-forward="true" selection-start-line="68" selection-start-column="0" selection-end-line="68" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -59,8 +54,8 @@
       <file leaf-file-name="pipelines.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/zhihuspider/pipelines.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="310">
-              <caret line="10" column="8" lean-forward="false" selection-start-line="10" selection-start-column="8" selection-end-line="10" selection-end-column="19" />
+            <state relative-caret-position="248">
+              <caret line="8" column="25" lean-forward="false" selection-start-line="8" selection-start-column="6" selection-end-line="8" selection-end-column="25" />
               <folding />
             </state>
           </provider>
@@ -79,8 +74,8 @@
       <file leaf-file-name="items.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/zhihuspider/items.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="403">
-              <caret line="13" column="8" lean-forward="false" selection-start-line="13" selection-start-column="8" selection-end-line="13" selection-end-column="8" />
+            <state relative-caret-position="465">
+              <caret line="15" column="5" lean-forward="false" selection-start-line="15" selection-start-column="5" selection-end-line="15" selection-end-column="5" />
               <folding />
             </state>
           </provider>
@@ -121,11 +116,12 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/zhihuspider/items.py" />
         <option value="$PROJECT_DIR$/zhihuspider/spiders/config.py" />
-        <option value="$PROJECT_DIR$/zhihuspider/settings.py" />
-        <option value="$PROJECT_DIR$/zhihuspider/config.py" />
         <option value="$PROJECT_DIR$/zhihuspider/middlewares.py" />
+        <option value="$PROJECT_DIR$/zhihuspider/settings.py" />
+        <option value="$PROJECT_DIR$/zhihuspider/pipelines.py" />
+        <option value="$PROJECT_DIR$/zhihuspider/config.py" />
+        <option value="$PROJECT_DIR$/zhihuspider/items.py" />
         <option value="$PROJECT_DIR$/zhihuspider/spiders/login.py" />
       </list>
     </option>
@@ -455,14 +451,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/zhihuspider/items.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="403">
-          <caret line="13" column="8" lean-forward="false" selection-start-line="13" selection-start-column="8" selection-end-line="13" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/zhihuspider/spiders/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -481,24 +469,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/zhihuspider/settings.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1272">
-          <caret line="51" column="30" lean-forward="false" selection-start-line="51" selection-start-column="30" selection-end-line="51" selection-end-column="30" />
+        <state relative-caret-position="2108">
+          <caret line="68" column="0" lean-forward="true" selection-start-line="68" selection-start-column="0" selection-end-line="68" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/zhihuspider/config.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="527">
-          <caret line="17" column="12" lean-forward="false" selection-start-line="17" selection-start-column="4" selection-end-line="17" selection-end-column="19" />
+        <state relative-caret-position="217">
+          <caret line="7" column="28" lean-forward="true" selection-start-line="7" selection-start-column="28" selection-end-line="7" selection-end-column="28" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/zhihuspider/pipelines.py">
+    <entry file="file://$PROJECT_DIR$/zhihuspider/items.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="310">
-          <caret line="10" column="8" lean-forward="false" selection-start-line="10" selection-start-column="8" selection-end-line="10" selection-end-column="19" />
+        <state relative-caret-position="465">
+          <caret line="15" column="5" lean-forward="false" selection-start-line="15" selection-start-column="5" selection-end-line="15" selection-end-column="5" />
           <folding />
         </state>
       </provider>
@@ -511,10 +499,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/zhihuspider/pipelines.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="248">
+          <caret line="8" column="25" lean-forward="false" selection-start-line="8" selection-start-column="6" selection-end-line="8" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/zhihuspider/spiders/login.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="496">
-          <caret line="118" column="72" lean-forward="false" selection-start-line="118" selection-start-column="65" selection-end-line="118" selection-end-column="72" />
+        <state relative-caret-position="744">
+          <caret line="130" column="77" lean-forward="false" selection-start-line="130" selection-start-column="77" selection-end-line="130" selection-end-column="77" />
           <folding>
             <element signature="e#24#37#0" expanded="true" />
           </folding>

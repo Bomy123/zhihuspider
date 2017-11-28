@@ -7,11 +7,13 @@ import urllib.request
 import random
 from zhihuspider.items import ZhihuspiderItem
 from zhihuspider.config import Config
+from zhihuspider.pipelines import ZhihuspiderPipeline
+import re
 class LoginSpider(scrapy.Spider):
     name = 'login'
     allowed_domains = ['zhihu.com']
-    need_login = False
-
+    need_login = True
+    pipeline = None
     headers = {
         "Host": "www.zhihu.com",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
@@ -27,6 +29,7 @@ class LoginSpider(scrapy.Spider):
     }
 
     def start_requests(self):
+        self.pipeline = ZhihuspiderPipeline()
         self.headers["User-Agent"] = random.choice(Config.user_agent_list)
         if self.need_login:
             url = "https://www.zhihu.com/captcha.gif?r=" + str(int(time.time() * 1000)) + "&type=login&lang=en"
@@ -77,6 +80,8 @@ class LoginSpider(scrapy.Spider):
     def parse_main_page(self,response):
         topics = response.xpath("//li[@class='zm-topic-cat-item']/a/text()").extract()
         ids= response.xpath("//li[@class='zm-topic-cat-item']/@data-id").extract()
+        pat = '"user_hash":(.*?)}'
+        user_hash = re.compile(pat).findall(response.body.decode("utf-8","ignore"))[0]
         if Config.debug:
             print(topics.__str__())
             print("ids",ids.__str__())
@@ -84,46 +89,85 @@ class LoginSpider(scrapy.Spider):
         for idx in range(0,len(topics)):
             topic_url = "https://www.zhihu.com/topics#"+urllib.request.quote(topics[idx])
             url_l.append(topic_url)
-        #yield self.create_item(type=Config.topics_type, id=ids, title=topics, url=url_l)
-        return self.get_class_data(ids)
+        self.create_item(type=Config.topics_type, id=ids, title=topics, url=url_l)
+        if self.need_login:
+            return self.get_class_data(ids, user_hash)
+        else:
+            return self.get_class_default_data(ids,url_l)
 
-
-    def get_class_data(self,ids):
+    def get_class_default_data(self,ids,urls):
+        time.sleep(4)
         self.headers["Referer"] = "https://www.zhihu.com/topics"
-        # head = {
-        #         "Accept": "* / *",
-        #         "Accept-Encoding":"gzip, deflate, br",
-        #         "Accept-Language": "zh - CN, zh;q = 0.8",
-        #         "Connection": "keep - alive",
-        #         "Content-Length": "90",
-        #         "Content-Type": "application/x-www-form-urlencoded;charset = UTF-8",
-        #         "Cookie": 'q_c1 = 65099507e9694e438e990469fe57878c|1507596840000|1492482581000;_zap = f551978a-3d50-4e97-b2b2-1588c0b13ebe;q_c1 = 65099507e9694e438e990469fe57878c | 1511421051000 | 1492482581000;d_c0 = "AAAC-tv_ugyPTo4EreeI6O2oLttWZGUyEtE=|1511487750";capsion_ticket = "2|1:0|10:1511514801|14:capsion_ticket|44:NTFhYTFlNjI0ZTRiNDQxZGFkYTRlNjllMDY3ZDBiNTc=|fe850b4c310f7cce72001796386f038ebc6ddf0349055ad5c1ccdd4918464951";aliyungf_tc = AQAAAMF1WAf7fAcA4bg8Oj1lbRVKL7oZ;_xsrf = 8b8bdf34ecd10b8fa7f172accb2cadbc;l_cap_id = "NDA2NDJhYmU1OWVlNDIwMzg0NzY5YjU0YTA2NGExNGY=|1511832896|752f769fdc840eb2414d851aefd4c7d43bac2e24";r_cap_id = "NTBiNDVhMDM2YjQxNDMwYjllM2QxM2FiMjcxYTRmODc=|1511832896|c5c635500e72d0408ceb81c5ad6c01046a842699";cap_id = "YzI5NjZjNjE5MzkyNDk4YmJkYmYyZjgyMzU3Y2NmYzM=|1511832896|cdadede9d13c4230acb853b96f5687cb3793f717";__utma = 51854390.493098.1511507142.1511768899.1511832893.11;__utmc = 51854390;__utmz = 51854390.1511832893.11.9.utmcsr = baidu | utmccn = (organic) | utmcmd = organic;__utmv = 51854390.000--|2=registration_date = 20171124 = 1 ^ 3 = entry_date = 20170418 = 1',
-        #         "Host": "www.zhihu.com",
-        #         "Origin": "https://www.zhihu.com",
-        #         "Referer": "https://www.zhihu.com/topics",
-        #         "User-Agent":random.choice(Config.user_agent_list),
-        #         "X-Requested-With": "XMLHttpRequest",
-        #         "X-Xsrftoken": "8b8bdf34ecd10b8fa7f172accb2cadbc"
-        # }
+        for idx in range(0,len(urls)):
+            yield [Request(urls[idx],headers=self.headers,dont_filter=True,meta={"rid":[id[idx]]},callback=self.parse_class_page)]
+
+    def get_class_data(self,ids,user_hash):
+        time.sleep(4)
+        self.headers["Referer"] = "https://www.zhihu.com/topics"
         if Config.debug:
-            print(self.headers.__str__())
+            print("get_class_data",user_hash)
         for id in ids:
             if Config.debug:
                 print(id)
             url = "https://www.zhihu.com/node/TopicsPlazzaListV2"
-            for i in range(0,2):
+            for i in range(0,1):
                 time.sleep(4)
                 self.headers["User-Agent"] = random.choice(Config.user_agent_list)
                 data = {
                     "method": "next",
-                    "params": '{"topic_id":'+id+', "offset":20, "hash_id":""}'
+                    "params": '{"topic_id":'+id+', "offset":20, "hash_id":'+user_hash+'}'
                 }
-                yield FormRequest(url,method="POST",headers=self.headers,formdata=data,callback=self.parse_class_page,dont_filter=True)
+                if Config.debug:
+                    print(data["params"])
+                yield FormRequest(url,method="POST",meta = {"rid":[id]},headers=self.headers,formdata=data,callback=self.parse_class_page,dont_filter=True)
 
     def parse_class_page(self,response):
-        print(response.body)
 
-    def parse_special_page(self,response):
+        #hrefs = response.xpath('//div[@class="blk"]/a[@target="_blank"]/@href').extract()
+        if self.need_login:
+            pat = 'href.*?\/(\d*?)"'
+            ids = re.compile(pat).findall(response.body.decode("utf-8","ignore"))
+        else:
+            ids = response.xpath('//a[@data-za-element-name="Title"]/@data-id').extract()
+        if Config.debug:
+            print("parse_class_page:",ids.__str__(),response.body.decode("utf-8","ignore"))
+
+        titles = response.xpath('//image/@alt')
+        accurate_urls  = []
+        for id in ids:
+            # tmp_l = href.splite("/")
+            # id = tmp_l[len(tmp_l)-1]
+            ids.append(id)
+            accurate_url = "https://www.zhihu.com/topic/"+id+"/hot"
+            accurate_urls.append(accurate_url)
+        self.create_item(type=Config.content_type,id=ids,rid=response.meta["rid"],title=titles,url=accurate_urls)
+
+        return self.get_content_first_page(ids)
+    def get_content_first_page(self,ids):
+        if Config.debug:
+            print("get_content_first_page:",ids)
+        for id in ids:
+            time.sleep(10)
+            url = "https://www.zhihu.com/topic/"+id+"/hot"
+            if Config.debug:
+                print(url)
+            yield [Request(url=url,headers=self.headers,meta={"rid":id},callback=self.parse_content_first_page)]
+
+    def parse_content_first_page(self,response):
+        if Config.debug:
+            print("parse_content_first_page")
+        print(response.xpath('//div[@class="feed-item feed-item-hook  folding"]/@data-score'))
+
+    def get_content_page(self,ids):
+        for id in ids:
+            url = "https://www.zhihu.com/topic"+id+"/hot"
+            pass
+
+    def parse_content_page(self,ids):
+        for id in ids:
+            url = "https://www.zhihu.com/topic"+id+"/hot"
+            pass
+    def parse_special_first_page(self,response):
         pass
 
     def parse_question_page(self,response):
@@ -132,12 +176,13 @@ class LoginSpider(scrapy.Spider):
     def parse_answer_page(self,response):
         pass
 
-    def create_item(self,type,id = None,title = None,author = None,content = None,url=None):
+    def create_item(self,type,id = None,rid = None,title = None,author = None,content = None,url=None):
         item = ZhihuspiderItem()
         item["type"] = type
         item["id"] = id
+        item["rid"] = rid
         item["title"] = title
         item["author"] = author
         item["content"] = content
         item["url"] = url
-        return item
+        self.pipeline.process_item(item = item,spider=self)

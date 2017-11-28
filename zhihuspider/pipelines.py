@@ -8,4 +8,5 @@
 
 class ZhihuspiderPipeline(object):
     def process_item(self, item, spider):
-        return item
+        #return item
+        print(123)

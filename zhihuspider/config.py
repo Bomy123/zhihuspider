@@ -2,6 +2,7 @@ class Config:
     debug = True
     topics_type = {"topics"}
     class_type = {"class"}
+    content_type = {"content"}
     special_type = {"special"}
     question_type = {"question"}
     answer_type = {"answer"}
