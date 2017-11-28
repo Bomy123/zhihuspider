@@ -12,7 +12,7 @@ import re
 class LoginSpider(scrapy.Spider):
     name = 'login'
     allowed_domains = ['zhihu.com']
-    need_login = True
+    need_login = False
     pipeline = None
     headers = {
         "Host": "www.zhihu.com",
@@ -78,10 +78,11 @@ class LoginSpider(scrapy.Spider):
             print("登陆失败")
 
     def parse_main_page(self,response):
+        if Config.debug:
+            print(response.body)
         topics = response.xpath("//li[@class='zm-topic-cat-item']/a/text()").extract()
-        ids= response.xpath("//li[@class='zm-topic-cat-item']/@data-id").extract()
-        pat = '"user_hash":(.*?)}'
-        user_hash = re.compile(pat).findall(response.body.decode("utf-8","ignore"))[0]
+        ids = response.xpath("//li[@class='zm-topic-cat-item']/@data-id").extract()
+
         if Config.debug:
             print(topics.__str__())
             print("ids",ids.__str__())
@@ -91,6 +92,8 @@ class LoginSpider(scrapy.Spider):
             url_l.append(topic_url)
         self.create_item(type=Config.topics_type, id=ids, title=topics, url=url_l)
         if self.need_login:
+            pat = '"user_hash":(.*?)}'
+            user_hash = re.compile(pat).findall(response.body.decode("utf-8", "ignore"))[0]
             return self.get_class_data(ids, user_hash)
         else:
             return self.get_class_default_data(ids,url_l)
@@ -124,22 +127,29 @@ class LoginSpider(scrapy.Spider):
     def parse_class_page(self,response):
 
         #hrefs = response.xpath('//div[@class="blk"]/a[@target="_blank"]/@href').extract()
+        ids = None
+        accurate_urls = []
+        if Config.debug:
+            print("parse_class_page:",response.body.decode("utf-8","ignore"))
         if self.need_login:
             pat = 'href.*?\/(\d*?)"'
             ids = re.compile(pat).findall(response.body.decode("utf-8","ignore"))
+            for id in ids:
+                # tmp_l = href.splite("/")
+                # id = tmp_l[len(tmp_l)-1]
+                ids.append(id)
+                accurate_url = "https://www.zhihu.com/topic/" + id + "/hot"
+                accurate_urls.append(accurate_url)
         else:
-            ids = response.xpath('//a[@data-za-element-name="Title"]/@data-id').extract()
-        if Config.debug:
-            print("parse_class_page:",ids.__str__(),response.body.decode("utf-8","ignore"))
+            hrefs = response.xpath('//div[@class="blk"]/a[@target="_blank"]/@href').extract()
+            titles = response.xpath('//strong/text()')
+            for href in hrefs:
+                tmp_l = href.splite("/")
+                id = tmp_l[len(tmp_l)-1]
+                ids.append(id)
+                accurate_url = "https://www.zhihu.com/topic/" + id + "/hot"
+                accurate_urls.append(accurate_url)
 
-        titles = response.xpath('//image/@alt')
-        accurate_urls  = []
-        for id in ids:
-            # tmp_l = href.splite("/")
-            # id = tmp_l[len(tmp_l)-1]
-            ids.append(id)
-            accurate_url = "https://www.zhihu.com/topic/"+id+"/hot"
-            accurate_urls.append(accurate_url)
         self.create_item(type=Config.content_type,id=ids,rid=response.meta["rid"],title=titles,url=accurate_urls)
 
         return self.get_content_first_page(ids)
