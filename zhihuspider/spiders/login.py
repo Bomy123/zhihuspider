@@ -16,8 +16,6 @@ from zhihuspider.spiders.logic.mainpage import MainPageParser
 class LoginSpider(scrapy.Spider):
     name = 'login'
     allowed_domains = ['zhihu.com']
-    need_login = False
-    pipeline = None
     mainparser = None
     headers = {
         "Host": "www.zhihu.com",
@@ -35,9 +33,8 @@ class LoginSpider(scrapy.Spider):
 
     def start_requests(self):
         self.mainparser = MainPageParser()
-        self.pipeline = ZhihuspiderPipeline()
         self.headers["User-Agent"] = random.choice(Config.user_agent_list)
-        if self.need_login:
+        if Config.login:
             url = "https://www.zhihu.com/captcha.gif?r=" + str(int(time.time() * 1000)) + "&type=login&lang=en"
             print(url)
             return [Request(url=url,

@@ -1,5 +1,8 @@
 class Config:
     debug = True
+
+    login = False
+
     topics_type = ["topics"]
     class_type = ["class"]
     artical_type = ["artical"]
