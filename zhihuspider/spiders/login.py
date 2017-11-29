@@ -1,19 +1,24 @@
 # -*- coding: utf-8 -*-
+import json
+import random
+import re
+import time
+import urllib.request
+
 import scrapy
 from scrapy.http import Request, FormRequest
-import time
-import json
-import urllib.request
-import random
+
 from zhihuspider.items import ZhihuspiderItem
-from zhihuspider.config import Config
 from zhihuspider.pipelines import ZhihuspiderPipeline
-import re
+from zhihuspider.spiders.config import Config
+from zhihuspider.spiders.logic.mainpage import MainPageParser
+
 class LoginSpider(scrapy.Spider):
     name = 'login'
     allowed_domains = ['zhihu.com']
     need_login = False
     pipeline = None
+    mainparser = None
     headers = {
         "Host": "www.zhihu.com",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
@@ -29,6 +34,7 @@ class LoginSpider(scrapy.Spider):
     }
 
     def start_requests(self):
+        self.mainparser = MainPageParser()
         self.pipeline = ZhihuspiderPipeline()
         self.headers["User-Agent"] = random.choice(Config.user_agent_list)
         if self.need_login:
@@ -37,7 +43,7 @@ class LoginSpider(scrapy.Spider):
             return [Request(url=url,
                             headers=self.headers, callback=self.parse)]
         else:
-            return [Request("https://www.zhihu.com/topics",headers=self.headers,callback=self.parse_main_page)]
+            return [Request("https://www.zhihu.com/topics",headers=self.headers,callback=self.mainparser.parse_main_page)]
 
 
     def parse(self, response):
@@ -73,126 +79,7 @@ class LoginSpider(scrapy.Spider):
         res = json.loads(response.body.decode("utf-8","ignore"))
         if res["r"] == 0:
             print("登陆成功")
-            return [Request("https://www.zhihu.com/topics", headers=self.headers, callback=self.parse_main_page)]
+            return [Request("https://www.zhihu.com/topics", headers=self.headers, callback=self.mainparser.parse_main_page)]
         else:
             print("登陆失败")
 
-    def parse_main_page(self,response):
-        if Config.debug:
-            print(response.body)
-        topics = response.xpath("//li[@class='zm-topic-cat-item']/a/text()").extract()
-        ids = response.xpath("//li[@class='zm-topic-cat-item']/@data-id").extract()
-
-        if Config.debug:
-            print(topics.__str__())
-            print("ids",ids.__str__())
-        url_l = []
-        for idx in range(0,len(topics)):
-            topic_url = "https://www.zhihu.com/topics#"+urllib.request.quote(topics[idx])
-            url_l.append(topic_url)
-        self.create_item(type=Config.topics_type, id=ids, title=topics, url=url_l)
-        if self.need_login:
-            pat = '"user_hash":(.*?)}'
-            user_hash = re.compile(pat).findall(response.body.decode("utf-8", "ignore"))[0]
-            return self.get_class_data(ids, user_hash)
-        else:
-            return self.get_class_default_data(ids,url_l)
-
-    def get_class_default_data(self,ids,urls):
-        time.sleep(4)
-        self.headers["Referer"] = "https://www.zhihu.com/topics"
-        for idx in range(0,len(urls)):
-            yield [Request(urls[idx],headers=self.headers,dont_filter=True,meta={"rid":[id[idx]]},callback=self.parse_class_page)]
-
-    def get_class_data(self,ids,user_hash):
-        time.sleep(4)
-        self.headers["Referer"] = "https://www.zhihu.com/topics"
-        if Config.debug:
-            print("get_class_data",user_hash)
-        for id in ids:
-            if Config.debug:
-                print(id)
-            url = "https://www.zhihu.com/node/TopicsPlazzaListV2"
-            for i in range(0,1):
-                time.sleep(4)
-                self.headers["User-Agent"] = random.choice(Config.user_agent_list)
-                data = {
-                    "method": "next",
-                    "params": '{"topic_id":'+id+', "offset":20, "hash_id":'+user_hash+'}'
-                }
-                if Config.debug:
-                    print(data["params"])
-                yield FormRequest(url,method="POST",meta = {"rid":[id]},headers=self.headers,formdata=data,callback=self.parse_class_page,dont_filter=True)
-
-    def parse_class_page(self,response):
-
-        #hrefs = response.xpath('//div[@class="blk"]/a[@target="_blank"]/@href').extract()
-        ids = None
-        accurate_urls = []
-        if Config.debug:
-            print("parse_class_page:",response.body.decode("utf-8","ignore"))
-        if self.need_login:
-            pat = 'href.*?\/(\d*?)"'
-            ids = re.compile(pat).findall(response.body.decode("utf-8","ignore"))
-            for id in ids:
-                # tmp_l = href.splite("/")
-                # id = tmp_l[len(tmp_l)-1]
-                ids.append(id)
-                accurate_url = "https://www.zhihu.com/topic/" + id + "/hot"
-                accurate_urls.append(accurate_url)
-        else:
-            hrefs = response.xpath('//div[@class="blk"]/a[@target="_blank"]/@href').extract()
-            titles = response.xpath('//strong/text()')
-            for href in hrefs:
-                tmp_l = href.splite("/")
-                id = tmp_l[len(tmp_l)-1]
-                ids.append(id)
-                accurate_url = "https://www.zhihu.com/topic/" + id + "/hot"
-                accurate_urls.append(accurate_url)
-
-        self.create_item(type=Config.content_type,id=ids,rid=response.meta["rid"],title=titles,url=accurate_urls)
-
-        return self.get_content_first_page(ids)
-    def get_content_first_page(self,ids):
-        if Config.debug:
-            print("get_content_first_page:",ids)
-        for id in ids:
-            time.sleep(10)
-            url = "https://www.zhihu.com/topic/"+id+"/hot"
-            if Config.debug:
-                print(url)
-            yield [Request(url=url,headers=self.headers,meta={"rid":id},callback=self.parse_content_first_page)]
-
-    def parse_content_first_page(self,response):
-        if Config.debug:
-            print("parse_content_first_page")
-        print(response.xpath('//div[@class="feed-item feed-item-hook  folding"]/@data-score'))
-
-    def get_content_page(self,ids):
-        for id in ids:
-            url = "https://www.zhihu.com/topic"+id+"/hot"
-            pass
-
-    def parse_content_page(self,ids):
-        for id in ids:
-            url = "https://www.zhihu.com/topic"+id+"/hot"
-            pass
-    def parse_special_first_page(self,response):
-        pass
-
-    def parse_question_page(self,response):
-        pass
-
-    def parse_answer_page(self,response):
-        pass
-
-    def create_item(self,type,id = None,rid = None,title = None,author = None,content = None,url=None):
-        item = ZhihuspiderItem()
-        item["type"] = type
-        item["id"] = id
-        item["rid"] = rid
-        item["title"] = title
-        item["author"] = author
-        item["content"] = content
-        item["url"] = url
-        self.pipeline.process_item(item = item,spider=self)

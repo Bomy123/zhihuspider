@@ -1,11 +1,11 @@
 class Config:
     debug = True
-    topics_type = {"topics"}
-    class_type = {"class"}
-    content_type = {"content"}
-    special_type = {"special"}
-    question_type = {"question"}
-    answer_type = {"answer"}
+    topics_type = ["topics"]
+    class_type = ["class"]
+    artical_type = ["artical"]
+    profession_type = ["profession"]
+    question_type = ["question"]
+    answer_type = ["answer"]
 
     zhihu_user = "15976898663"
     zhihu_passwd = "420321@zmb"
@@ -14,7 +14,8 @@ class Config:
     db_passwd = "shareuser123"
     db_host = "172.0.0.1"
     db_port = 3306
-    db_name  = "zhihu"
+    db_name = "zhihu"
+    charset = "utf-8"
 
     user_agent_list = [
         "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36 OPR/26.0.1656.60",
