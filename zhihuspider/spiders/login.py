@@ -64,6 +64,8 @@ class LoginSpider(scrapy.Spider):
         res = json.loads(response.body.decode("utf-8","ignore"))
         if res["r"] == 0:
             print("登陆成功")
+			cookie = response.request.headers.getlist("cookie")
+			Commons.setcookie(cookie)
             return [Request("https://www.zhihu.com/topics", headers=Config.headers, callback=self.mainparser.parse_main_page)]
         else:
             print("登陆失败")

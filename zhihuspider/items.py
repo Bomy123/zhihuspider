@@ -11,10 +11,11 @@ import scrapy
 class ZhihuspiderItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
-    type = scrapy.Field()
+    table = scrapy.Field()
     id = scrapy.Field()
     rid = scrapy.Field()
     title = scrapy.Field()
     author = scrapy.Field()
     content = scrapy.Field()
+	content_type = scrapy.Field()
     url = scrapy.Field()

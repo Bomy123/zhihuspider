@@ -3,15 +3,24 @@ from zhihuspider.spiders.dao.dbTools import Db
 
 
 class Commons:
-    def commit_item(datatype=None,id = None,rid = None,title = None,author = None,content = None,url=None):
+	__cookie = None
+    def commit_item(datatype=None,id = None,rid = None,title = None,author = None,content = None,url=None,content_type = None):
         item = ZhihuspiderItem()
-        item["type"] = datatype
+        item["table"] = datatype
         item["id"] = id
         item["rid"] = rid
         item["title"] = title
         item["author"] = author
         item["content"] = content
+		item["content_type"] = content
         item["url"] = url
         db = Db.getinstance()
         db.commit(item)
         return item
+
+	def setcookie(cookie):
+		__cookie = cookie
+		print(__cookie)
+
+	def getcookie(cookie):
+		return __cookie
