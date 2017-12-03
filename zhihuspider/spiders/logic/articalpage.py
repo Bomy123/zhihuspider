@@ -8,13 +8,15 @@ from zhihuspider.spiders.commons import Commons
 from zhihuspider.spiders.logic.professionpage import ProfesionPageParser
 from zhihuspider.spiders.logic.questionpage import QuestionPageParser
 
-class ArticlePageParser:
-	proparser = None
-	quesparser = None
 
-	def __init__(self):
-		proparser = ProfesionPageParser()
-		quesparser = QuestionPageParser()
+class ArticlePageParser:
+    proparser = None
+    quesparser = None
+
+    def __init__(self):
+        self.proparser = ProfesionPageParser()
+        self.quesparser = QuestionPageParser()
+
     def get_article_default_page(self, ids):
         if Config.debug:
             print("get_content_first_page:", ids)
@@ -28,34 +30,38 @@ class ArticlePageParser:
     def parse_article_default_page(self, response):
         if Config.debug:
             print("parse_content_first_page")
-		hrefs = response.xpath('//h2/a[@data-za-element-name="Title"]/@href').extract()
-		titles = response.xpath('//h2/a[@data-za-element-name="Title"]/text()').extract()
+        hrefs = response.xpath('//h2/a[@data-za-element-name="Title"]/@href').extract()
+        titles = response.xpath('//h2/a[@data-za-element-name="Title"]/text()').extract()
         scores = response.xpath('//div[@class="feed-item feed-item-hook  folding"]/@data-score').extrace()
-		rid = response.meta["rid"]
-		if Config.login:
-			self.get_more_article_data(response.meta["rid"],data-score[len(data-score)-1])
-		for idx in range(0,len(hrefs)):
-			accurate_url = "https://www.zhihu.com"+href
-			temp_str = href[idx].split("/")
-			id = temp_str[2]
-			if temp_str[1] == "q":
-				Commons.commit_item(datatype=Config.artical_type,id = [id],rid = [rid],title = [titles[idx]],author = None,content = None,url=[accurate_url]],content_type = ["专栏"]])
-				return proparser.get_default_pro_data(id,response.meta["rid"],accurate_url)
-			else:
-				Commons.commit_item(datatype=Config.artical_type,id = [id],rid = [rid],title = [titles[idx]],author = None,content = None,url=[accurate_url]],content_type = ["问答"]])
-				return quesparser.get_default_ques_page(id,accurate_url)
+        rid = response.meta["rid"]
+        if Config.login:
+            self.get_more_article_data(response.meta["rid"], scores[len(scores) - 1])
+        for idx in range(0, len(hrefs)):
+            accurate_url = "https://www.zhihu.com" + hrefs[idx]
+            temp_str = hrefs[idx].split("/")
+            id = temp_str[2]
+            if temp_str[1] == "q":
+                Commons.commit_item(datatype=Config.artical_type, id=[id], rid=[rid], title=[titles[idx]], author=None,
+                                    content=None,url=[accurate_url], content_type=["专栏"])
+                return self.proparser.get_default_pro_data(id, response.meta["rid"], accurate_url)
+            else:
+                Commons.commit_item(datatype=Config.artical_type, id=[id], rid=[rid], title=[titles[idx]], author=None,
+                                    content=None, url=[accurate_url], content_type=["问答"]
+                                    )
+                return self.quesparser.get_default_ques_page(id, accurate_url)
 
-	def get_more_article_data(self,id,data-score):
-		return get_article_data(id,data-score)
+    def get_more_article_data(self, id, data_score):
+        return self.get_article_data(id, data_score)
 
-    def get_article_data(self, id,data-score):
-        url  = "https://www.zhihu.com/topic/" + id + "/hot"
-		data = {
-				"start":0
-				"offset":data-score
-				}
-		return [FormRequest(url,formdata = data,meta = {"rid":id},headers = Config.headers,callback = self.parse_article_data)]
+    def get_article_data(self, id, data_score):
+        url = "https://www.zhihu.com/topic/" + id + "/hot"
+        data = {
+            "start": 0,
+            "offset": data_score
+        }
+        return [
+            FormRequest(url, formdata=data, meta={"rid": id}, headers=Config.headers, callback=self.parse_article_data)]
 
     def parse_article_data(self, response):
         scores = response.xpath('//div[@class="feed-item feed-item-hook  folding"]/@data-score').extrace()
-		self.get_article_data(response.meta[rid],data-score[len(data-score)-1])
+        self.get_article_data(response.meta["rid"], scores[len(scores) - 1])
