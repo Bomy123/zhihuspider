@@ -25,7 +25,7 @@ class ArticlePageParser:
             url = "https://www.zhihu.com/topic/" + id + "/hot"
             if Config.debug:
                 print(url)
-            yield [Request(url=url, headers=self.headers, meta={"rid": id}, callback=self.parse_content_first_page)]
+            yield Request(url=url, headers=Config.headers, meta={"rid": id}, callback=self.parse_article_default_page)
 
     def parse_article_default_page(self, response):
         if Config.debug:

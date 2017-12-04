@@ -17,5 +17,5 @@ class ZhihuspiderItem(scrapy.Item):
     title = scrapy.Field()
     author = scrapy.Field()
     content = scrapy.Field()
-	content_type = scrapy.Field()
+    content_type = scrapy.Field()
     url = scrapy.Field()

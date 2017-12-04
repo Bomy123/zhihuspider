@@ -5,7 +5,6 @@ from zhihuspider.spiders.config import Config
 
 
 class QuestionPageParser(object):
-
     def get_default_ques_page(self, id, url):
         return [Request(url, headers=Config.headers, meta={"id", id}, callback=self.parse_default_ques_page)]
 

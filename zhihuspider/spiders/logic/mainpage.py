@@ -1,6 +1,8 @@
 import re
 import urllib.request
-
+import gzip
+from io import StringIO
+from io import BytesIO
 from zhihuspider.spiders.config import Config
 from zhihuspider.spiders.commons import Commons
 from zhihuspider.spiders.logic.classpage import ClassPageParser
@@ -11,8 +13,6 @@ class MainPageParser(object):
     def __init__(self):
         self.classparser = ClassPageParser()
     def parse_main_page(self,response):
-        if Config.debug:
-            print(response.body)
         topics = response.xpath("//li[@class='zm-topic-cat-item']/a/text()").extract()
         ids = response.xpath("//li[@class='zm-topic-cat-item']/@data-id").extract()
 
@@ -28,4 +28,4 @@ class MainPageParser(object):
         if Config.login:
             pat = '"user_hash":(.*?)}'
             user_hash = re.compile(pat).findall(response.body.decode("utf-8", "ignore"))[0]
-        return self.classparser.get_class_default_data(ids,url_l,user_hash)
+        return self.classparser.get_class_default_data(ids, url_l, user_hash)

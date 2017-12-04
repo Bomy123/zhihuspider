@@ -22,10 +22,10 @@ class Db(IDbTools):
 
     def commit(self, item: ZhihuspiderItem):
         try:
-            if item["type"] is None:
+            if item["table"] is None:
                 return False
             else:
-                self.mdict[item["type"][0]](item)
+                self.mdict[item["table"][0]](item)
         except Exception as e:
             print("KeyError:", e)
 
@@ -49,7 +49,7 @@ class Db(IDbTools):
         return True
 
     def __tinsert(self, item):
-        print(item["type"])
+        print(item["table"])
 
     def __cinsert(self, item):
         pass

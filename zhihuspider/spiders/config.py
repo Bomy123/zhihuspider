@@ -23,7 +23,7 @@ class Config:
     headers = {
         "Host": "www.zhihu.com",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
-        "Accept-Encoding": "gzip, deflate, br",
+        "Accept-Encoding": "gzip",
         "Accept-Language": "zh-CN,zh;q=0.8",
         "Cache-Control": "max-age=0",
         "Upgrade - Insecure - Requests": "1",
