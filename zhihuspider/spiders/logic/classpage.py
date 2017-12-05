@@ -41,7 +41,7 @@ class ClassPageParser:
                 user_hash = response.meta["user_hash"]
                 self.get_more_class_data(id, user_hash)
         Commons.commit_item(datatype=Config.class_type, id=[id], rid=response.meta["rid"], title=titles, url=accurate_urls)
-        return self.articalparser.get_article_default_page(ids)
+        return self.articalparser.get_article_default_page([ids[0]])
 
     def get_more_class_data(self, id, user_hash):
         return self.get_class_data(id, user_hash)
