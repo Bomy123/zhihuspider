@@ -1,3 +1,6 @@
+import random
+
+
 class Config:
     debug = True
 
@@ -19,20 +22,6 @@ class Config:
     db_port = 3306
     db_name = "zhihu"
     charset = "utf-8"
-	
-    headers = {
-        "Host": "www.zhihu.com",
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
-        "Accept-Encoding": "gzip",
-        "Accept-Language": "zh-CN,zh;q=0.8",
-        "Cache-Control": "max-age=0",
-        "Upgrade - Insecure - Requests": "1",
-        "Connection": "keep-alive",
-        "Origin": "https://www.zhihu.com",
-        "Referer": "https://www.zhihu.com/topics",
-        "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.78 Safari/537.36",
-        #"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
-    }
 
     user_agent_list = [
         "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36 OPR/26.0.1656.60",
@@ -76,3 +65,17 @@ class Config:
         "UCWEB7.0.2.37/28/999",
         "NOKIA5700/ UCWEB7.0.2.37/28/999",
         "Openwave/ UCWEB7.0.2.37/28/999"]
+
+    headers = {
+        "Host": "www.zhihu.com",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
+        "Accept-Encoding": "gzip",
+        "Accept-Language": "zh-CN,zh;q=0.8",
+        "Cache-Control": "max-age=0",
+        "Upgrade - Insecure - Requests": "1",
+        "Connection": "keep-alive",
+        "Origin": "https://www.zhihu.com",
+        "Referer": "https://www.zhihu.com/topics",
+        "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.78 Safari/537.36",
+        # "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+    }
