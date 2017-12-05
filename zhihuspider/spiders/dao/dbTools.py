@@ -4,6 +4,7 @@ from zhihuspider.spiders.interface import IDbTools
 import logging
 import pymysql
 
+
 class Db(IDbTools):
     conn = None
     mdict = {}
@@ -11,8 +12,8 @@ class Db(IDbTools):
 
     def __init__(self):
         super().__init__()
-        # self.conn = pymysql.connect(host=Config.db_host, port=Config.db_port, user=Config.db_user,
-        # password=Config.db_passwd, database=Config.db_name, charset=Config.charset)
+        self.conn = pymysql.connect(host=Config.db_host, port=Config.db_port, user=Config.db_user,
+                                    password=Config.db_passwd, database=Config.db_name, charset=Config.charset)
 
     # @staticmethod
     # def getinstance():
@@ -49,25 +50,63 @@ class Db(IDbTools):
         return True
 
     def __tinsert(self, item):
-        print(item["table"])
+        for idx in range(0,len(item["id"])):
+            sql = self.composql("topics",item["title"][idx],item["id"][idx],item["url"][idx])
+            if Config.debug:
+                print(sql)
+            self.conn.query(sql=sql)
+            self.conn.commit()
 
     def __cinsert(self, item):
-        pass
+        for idx in range(0,len(item["id"])):
+            sql = self.composql("class",item["title"][idx],item["id"][idx],item["url"][idx],item["rid"][0])
+            if Config.debug:
+                print(sql)
+            self.conn.query(sql=sql)
+            self.conn.commit()
 
     def __ainsert(self, item):
-        pass
+        for idx in range(0,len(item["id"])):
+            sql = self.composql("artical",item["title"][idx],item["id"][idx],item["content_type"][idx],item["url"][idx],item["rid"][0])
+            if Config.debug:
+                print(sql)
+            self.conn.query(sql=sql)
+            self.conn.commit()
 
     def __qinsert(self, item):
-        pass
+        for idx in range(0,len(item["id"])):
+            sql = self.composql("question",item["content"][idx],item["id"][idx])
+            self.conn.query(sql=sql)
+            self.conn.commit()
 
     def __aninsert(self, item):
-        pass
+        for idx in range(0,len(item["id"])):
+            sql = self.composql("class",item["content"][idx],item["author"][idx],item["id"][idx],item["rid"][0])
+            if Config.debug:
+                print(sql)
+            self.conn.query(sql=sql)
+            self.conn.commit()
 
     def __pinsert(self, item):
-        pass
+        for idx in range(0,len(item["id"])):
+            sql = self.composql("special",item["content"][idx],item["id"][idx])
+            if Config.debug:
+                print(sql)
+            self.conn.query(sql=sql)
+            self.conn.commit()
 
-        # def __del__(self):
-        #     self.conn.close()
+    def composql(self,table,*args):
+        sql = "INSERT INTO topics VALUES(null,"
+        for i in range(0,len(args)-1):
+            sql += "'"+args[i] + "',"
+        sql += "'"+args[len(args)-1]+"')"
+        return sql
+
+    def __del__(self):
+        try:
+            self.conn.close()
+        except Exception as e:
+            print(e.__str__())
 
 
 if __name__ == '__main__':

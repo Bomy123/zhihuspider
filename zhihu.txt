@@ -61,27 +61,26 @@ CREATE TABLE `zhihu`.`topics` (
   `title` VARCHAR(100) NOT NULL DEFAULT '文章分类名称',
   `class_id` VARCHAR(45) NOT NULL DEFAULT '文章分类id',
   `url` VARCHAR(150) NOT NULL DEFAULT '文章分类链接',
+  `topic_id` VARCHAR(20) NOT NULL DEFAULT '对应的话题id',
   PRIMARY KEY (`id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC));
 
-  CREATE TABLE `zhihu`.`content` (
+  CREATE TABLE `zhihu`.`artical` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `title` VARCHAR(100) NOT NULL,
+  `artical_id` VARCHAR(20) NOT NULL,
+  `type` VARCHAR(20) NOT NULL,
   `url` VARCHAR(150) NOT NULL,
   `class_id` VARCHAR(20) NOT NULL,
-  `content_id` VARCHAR(20) NOT NULL,
-  `author` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC));
-  
-  ALTER TABLE `zhihu`.`content` 
-ADD COLUMN `type` VARCHAR(10) NOT NULL AFTER `author`;
+
 
 
 CREATE TABLE `zhihu`.`special` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `text` MEDIUMTEXT NULL,
-  `content_id` VARCHAR(10) NOT NULL,
+  `special_id` VARCHAR(10) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC));
   
@@ -89,17 +88,14 @@ CREATE TABLE `zhihu`.`special` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `text` TEXT(1000) NOT NULL,
   `question_id` VARCHAR(20) NOT NULL,
-  `content_id` VARCHAR(20) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC));
   
  CREATE TABLE `zhihu`.`answer` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `text` MEDIUMTEXT NOT NULL,
+  `text` TEXT NOT NULL,
   `author` VARCHAR(45) NULL,
+  `ans_id` VARCHAR(20) NULL,
   `ques_id` VARCHAR(20) NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC));
-
-  ALTER TABLE `zhihu`.`question` 
-CHANGE COLUMN `text` `description` TEXT NOT NULL ;

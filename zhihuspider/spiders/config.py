@@ -16,12 +16,12 @@ class Config:
     zhihu_user = "15976898663"
     zhihu_passwd = "420321@zmb"
 
-    db_user = "share-user"
-    db_passwd = "shareuser123"
-    db_host = "172.0.0.1"
+    db_user = "root"
+    db_passwd = "root"
+    db_host = "localhost"
     db_port = 3306
     db_name = "zhihu"
-    charset = "utf-8"
+    charset = "utf8"
 
     user_agent_list = [
         "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36 OPR/26.0.1656.60",

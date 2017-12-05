@@ -11,18 +11,19 @@ class AnswerPageParser:
         url = "https://www.zhihu.com/question/" + rid
         return [Request(url, headers=Config.headers, meta={"rid": rid}, callback=self.parse_default_ans_page)]
 
-    def parse_default_ans_page(self, response):
+    def parse_default_ans_page(self,rid,response):
         data = response.xpath('//div[@id="data"]/@data-state').extract_first()
         data_o = data.replace("&quot;", '"').replace("&lt;", "<").replace("&gt;", ">").replace("&amp;", "&").replace(
             "&nbsp;", " ")
         data_json = json.loads(data_o)
-        ans_ids = self.get_ans_ids(response.meta["rid"],data_json)
+        ans_ids = self.get_ans_ids(rid,data_json)
         if Config.debug:
             print(ans_ids)
         for ans_id in ans_ids:
-            print("ans_content:",self.get_ans_content(ans_id,data_json))
-            print("ans_author:",self.get_ans_author(ans_id,data_json))
-            print("ans_next:",self.get_ans_next(data_json))
+            print("ans_content:",self.get_ans_content(str(ans_id),data_json))
+            print("ans_author:",self.get_ans_author(str(ans_id),data_json))
+
+        print("ans_next:",self.get_ans_next(rid,data_json))
 
 
     def get_more_ans_page(self):
@@ -37,7 +38,7 @@ class AnswerPageParser:
     def parse_ans_data(self):
         pass
 
-    def get_ans_ids(qid,self,jdata):
+    def get_ans_ids(self,qid,jdata):
         question = jdata['question']
         if question:
             answer = question['answers']
@@ -49,16 +50,19 @@ class AnswerPageParser:
 
 
 
-    def get_ans_next(self,jdata):
+    def get_ans_next(self,qid,jdata):
         question = jdata['question']
         if question:
             answer = question['answers']
+
             if answer:
-                next_href = answer['next']
-                if next_href:
-                    return next_href
-                else:
-                    return None
+                q_next = answer[qid]
+                if q_next:
+                    next_href = q_next['next']
+                    if next_href:
+                        return next_href
+                    else:
+                        return None
 
     def get_ans_content(self,id,jdata):
         entities = jdata['entities']

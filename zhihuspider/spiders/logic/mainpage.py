@@ -24,4 +24,4 @@ class MainPageParser(object):
         if Config.login:
             pat = '"user_hash":(.*?)}'
             user_hash = re.compile(pat).findall(response.body.decode("utf-8", "ignore"))[0]
-        return self.classparser.get_class_default_data(ids, [url_l[0]], user_hash)
+        return self.classparser.get_class_default_data(ids, url_l, user_hash)

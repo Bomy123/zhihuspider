@@ -21,7 +21,7 @@ class ArticlePageParser:
         if Config.debug:
             print("get_content_first_page:", ids)
         for id in ids:
-            time.sleep(10)
+            time.sleep(2)
             url = "https://www.zhihu.com/topic/" + id + "/hot"
             if Config.debug:
                 print(url)

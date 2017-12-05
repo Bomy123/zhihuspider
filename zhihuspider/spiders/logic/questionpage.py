@@ -20,4 +20,4 @@ class QuestionPageParser(object):
             if len(description) > 0:
                 print("parse_default_ques_page:",description[0])
         Commons.commit_item(datatype=Config.question_type, id=[response.meta["id"]], content=description)
-        self.ansparser.parse_default_ans_page(response)
+        self.ansparser.parse_default_ans_page(response.meta["id"],response)
