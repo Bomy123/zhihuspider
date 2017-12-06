@@ -3,7 +3,7 @@ from zhihuspider.spiders.dao.dbTools import Db
 from zhihuspider.spiders.config import Config
 class Commons:
     cookie = None
-
+    @staticmethod
     def commit_item(datatype=None, id=None, rid=None, title=None, author=None, content=None, url=None,
                     content_type=None):
         item = ZhihuspiderItem()

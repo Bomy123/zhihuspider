@@ -20,8 +20,8 @@ class MainPageParser(object):
             topic_url = "https://www.zhihu.com/topics#"+urllib.request.quote(topics[idx])
             url_l.append(topic_url)
         Commons.commit_item(datatype=Config.topics_type, id=ids, title=topics, url=url_l)
-        user_hash = None
+        user_hash = ""
         if Config.login:
             pat = '"user_hash":(.*?)}'
             user_hash = re.compile(pat).findall(response.body.decode("utf-8", "ignore"))[0]
-        return self.classparser.get_class_default_data(ids, url_l, user_hash)
+        return self.classparser.get_class_default_data(ids,  user_hash)

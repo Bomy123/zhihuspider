@@ -58,10 +58,10 @@ CREATE TABLE `zhihu`.`topics` (
   
  CREATE TABLE `zhihu`.`class` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `title` VARCHAR(100) NOT NULL DEFAULT '文章分类名称',
-  `class_id` VARCHAR(45) NOT NULL DEFAULT '文章分类id',
-  `url` VARCHAR(150) NOT NULL DEFAULT '文章分类链接',
-  `topic_id` VARCHAR(20) NOT NULL DEFAULT '对应的话题id',
+  `title` VARCHAR(100) NOT NULL,
+  `class_id` VARCHAR(45) NOT NULL,
+  `url` VARCHAR(150) NOT NULL,
+  `topic_id` VARCHAR(20) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC));
 

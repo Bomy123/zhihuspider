@@ -15,11 +15,6 @@ class Db(IDbTools):
         self.conn = pymysql.connect(host=Config.db_host, port=Config.db_port, user=Config.db_user,
                                     password=Config.db_passwd, database=Config.db_name, charset=Config.charset)
 
-    # @staticmethod
-    # def getinstance():
-    #     if DbUtils.minstance is None:
-    #         DbUtils.minstance = DbUtils()
-    #     return DbUtils.minstance
 
     def commit(self, item: ZhihuspiderItem):
         try:
@@ -55,7 +50,7 @@ class Db(IDbTools):
             if Config.debug:
                 print(sql)
             self.conn.query(sql=sql)
-            self.conn.commit()
+        self.conn.commit()
 
     def __cinsert(self, item):
         for idx in range(0,len(item["id"])):
@@ -63,40 +58,42 @@ class Db(IDbTools):
             if Config.debug:
                 print(sql)
             self.conn.query(sql=sql)
-            self.conn.commit()
+        self.conn.commit()
 
     def __ainsert(self, item):
         for idx in range(0,len(item["id"])):
             sql = self.composql("artical",item["title"][idx],item["id"][idx],item["content_type"][idx],item["url"][idx],item["rid"][0])
             if Config.debug:
                 print(sql)
-            self.conn.query(sql=sql)
-            self.conn.commit()
+            # self.conn.query(sql=sql)
+            # self.conn.commit()
 
     def __qinsert(self, item):
         for idx in range(0,len(item["id"])):
             sql = self.composql("question",item["content"][idx],item["id"][idx])
-            self.conn.query(sql=sql)
-            self.conn.commit()
+            if Config.debug:
+                print(sql)
+            # self.conn.query(sql=sql)
+            # self.conn.commit()
 
     def __aninsert(self, item):
         for idx in range(0,len(item["id"])):
             sql = self.composql("class",item["content"][idx],item["author"][idx],item["id"][idx],item["rid"][0])
             if Config.debug:
                 print(sql)
-            self.conn.query(sql=sql)
-            self.conn.commit()
+            # self.conn.query(sql=sql)
+            # self.conn.commit()
 
     def __pinsert(self, item):
         for idx in range(0,len(item["id"])):
             sql = self.composql("special",item["content"][idx],item["id"][idx])
             if Config.debug:
                 print(sql)
-            self.conn.query(sql=sql)
-            self.conn.commit()
+            # self.conn.query(sql=sql)
+            # self.conn.commit()
 
     def composql(self,table,*args):
-        sql = "INSERT INTO topics VALUES(null,"
+        sql = "INSERT INTO "+table+" VALUES(null,"
         for i in range(0,len(args)-1):
             sql += "'"+args[i] + "',"
         sql += "'"+args[len(args)-1]+"')"
