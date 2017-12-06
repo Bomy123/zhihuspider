@@ -2,7 +2,7 @@ import random
 
 
 class Config:
-    debug = True
+    debug = False
 
     login = False
 

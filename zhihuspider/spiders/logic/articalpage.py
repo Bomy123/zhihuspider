@@ -19,7 +19,7 @@ class ArticlePageParser:
         self.quesparser = QuestionPageParser()
 
     def get_article_default_page(self, ids):
-        return 0
+        #return 0
         if Config.debug:
             print("get_content_first_page:", ids)
         for id in ids:

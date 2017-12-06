@@ -15,7 +15,7 @@ class Commons:
         item["title"] = title
         item["author"] = author
         item["content"] = content
-        item["content_type"] = content
+        item["content_type"] = content_type
         item["url"] = url
         db = Db.getinstance()
         db.commit(item)

@@ -65,38 +65,38 @@ class Db(IDbTools):
             sql = self.composql("artical",item["title"][idx],item["id"][idx],item["content_type"][idx],item["url"][idx],item["rid"][0])
             if Config.debug:
                 print(sql)
-            # self.conn.query(sql=sql)
-            # self.conn.commit()
+            self.conn.query(sql=sql)
+            self.conn.commit()
 
     def __qinsert(self, item):
         for idx in range(0,len(item["id"])):
             sql = self.composql("question",item["content"][idx],item["id"][idx])
             if Config.debug:
                 print(sql)
-            # self.conn.query(sql=sql)
-            # self.conn.commit()
+            self.conn.query(sql=sql)
+            self.conn.commit()
 
     def __aninsert(self, item):
         for idx in range(0,len(item["id"])):
-            sql = self.composql("class",item["content"][idx],item["author"][idx],item["id"][idx],item["rid"][0])
+            sql = self.composql("answer",item["content"][idx],item["author"][idx],item["id"][idx],item["rid"][0])
             if Config.debug:
                 print(sql)
-            # self.conn.query(sql=sql)
-            # self.conn.commit()
+            self.conn.query(sql=sql)
+            self.conn.commit()
 
     def __pinsert(self, item):
         for idx in range(0,len(item["id"])):
             sql = self.composql("special",item["content"][idx],item["id"][idx])
             if Config.debug:
                 print(sql)
-            # self.conn.query(sql=sql)
-            # self.conn.commit()
+            self.conn.query(sql=sql)
+            self.conn.commit()
 
     def composql(self,table,*args):
         sql = "INSERT INTO "+table+" VALUES(null,"
         for i in range(0,len(args)-1):
-            sql += "'"+args[i] + "',"
-        sql += "'"+args[len(args)-1]+"')"
+            sql += "'"+args[i].replace(" ", "&nbsp;").replace("'","\\'") + "',"
+        sql += "'"+args[len(args)-1].replace(" ", "&nbsp;")+"')"
         return sql
 
     def __del__(self):

@@ -21,8 +21,8 @@ class AnswerPageParser:
         for ans_id in ans_ids:
             print("ans_content:",self.get_ans_content(str(ans_id),data_json))
             print("ans_author:",self.get_ans_author(str(ans_id),data_json))
-            Commons.commit_item(content=self.get_ans_content(str(ans_id),data_json),author=self.get_ans_author(str(ans_id),data_json),id=ans_id,rid=rid)
-        if self.get_ans_author(rid,data_json) > len(ans_ids):
+            Commons.commit_item(datatype=Config.answer_type,content=[self.get_ans_content(str(ans_id),data_json)],author=[self.get_ans_author(str(ans_id),data_json)],id=[str(ans_id)],rid=[rid])
+        if self.get_ans_count(rid,data_json) > len(ans_ids):
             nextpage = self.get_ans_next(rid, data_json)
             return self.get_more_ans_page(rid,nextpage)
 
@@ -34,9 +34,9 @@ class AnswerPageParser:
         rid = response.meta["rid"]
         data_o = response.body.decode("utf-8","ignore")
         data_json = json.loads(data_o)
-        resdata = self.get_more_ans_page(response.meta["rid"],data_json)
+        resdata = self.get_more_ans_data(response.meta["rid"],data_json)
         for idata in resdata:
-            Commons.commit_item(id=[idata["id"]],content=[idata["content"]],author=[idata["author"]],rid=rid)
+            Commons.commit_item(datatype=Config.answer_type,id=[idata["id"]],content=[idata["content"]],author=[idata["author"]],rid=rid)
         if self.get_isend(data_json):
             return self.get_more_ans_page(rid,self.get_more_next(data_json))
 
@@ -85,7 +85,7 @@ class AnswerPageParser:
                     if auinfo:
                         return auinfo['name']
 
-    def get_ans_author(self,qid,jdata):
+    def get_ans_count(self,qid,jdata):
         entities = jdata['entities']
         if entities:
             questions = entities['questions']
@@ -109,7 +109,7 @@ class AnswerPageParser:
                     res.append({"content":content})
                 aid = idata["id"]
                 if aid:
-                    res.append({"id"},aid)
+                    res.append({"id":aid})
                 author = content["author"]
                 if author:
                     name  = author["name"]

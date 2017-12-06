@@ -12,6 +12,7 @@ class QuestionPageParser(object):
 
     def __init__(self):
         self.ansparser = AnswerPageParser()
+
     def get_default_ques_page(self, id, url):
         Config.headers["User-Agent"] = url
         return [Request(url, headers=Config.headers, meta={"id":id}, callback=self.parse_default_ques_page)]
@@ -21,6 +22,7 @@ class QuestionPageParser(object):
         if Config.debug:
             if len(description) > 0:
                 print("parse_default_ques_page:",description[0])
+                description = [" "]
         Commons.commit_item(datatype=Config.question_type, id=[response.meta["id"]], content=description)
         self.ansparser.parse_default_ans_page(response)
 
@@ -35,8 +37,4 @@ class QuestionPageParser(object):
             content = msg[1]
             hdata  = html.document_fromstring(content)
             titles  = hdata.xpath('//a[@data-za-element-name="Title"]/text()')
-
-
-
-
         print(data_json)

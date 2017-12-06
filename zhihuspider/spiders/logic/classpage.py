@@ -2,7 +2,7 @@
 import random
 import json
 from lxml import html
-from scrapy.http import FormRequest
+from scrapy.http import FormRequest,Request
 
 from zhihuspider.spiders.config import Config
 from zhihuspider.spiders.commons import Commons
@@ -16,9 +16,9 @@ class ClassPageParser:
     def __init__(self):
         self.articalparser = ArticlePageParser()
 
-    def get_class_default_data(self, ids, user_hash=""):
+    def get_class_default_data(self, id, user_hash=""):
         Config.headers["Referer"] = "https://www.zhihu.com/topics"
-        print(ids)
+        print(id)
         # for idx in range(0, len(urls)):
         #     time.sleep(2)
         #     if Config.debug:
@@ -26,9 +26,7 @@ class ClassPageParser:
         #     yield Request(urls[idx], headers=Config.headers, dont_filter=True,
         #                    meta={"rid": [ids[idx]], "user_hash": user_hash},
         #                    callback=self.parse_class_default_data)
-        for id in ids:
-            yield self.get_class_data(id,user_hash)
-        return None
+        return self.get_class_data(id,user_hash)
 
     def parse_class_default_data(self, response):
         hrefs = response.xpath('//div[@class="blk"]/a[@target="_blank"]/@href').extract()
@@ -67,12 +65,12 @@ class ClassPageParser:
             }
             if Config.debug:
                 print(data["params"])
-            yield [FormRequest(url, method="POST", meta={"rid": id,"hash":user_hash}, headers=Config.headers, formdata=data,
-                              callback=self.parse_class_page, dont_filter=True)]
+            yield FormRequest(url, method="POST", meta={"rid": id,"hash":user_hash}, headers=Config.headers, formdata=data,
+                              callback=self.parse_class_page, dont_filter=True)
 
     def parse_class_page(self, response):
         data_o = response.body.decode("utf-8", "ignore")
-        print("data_o",data_o)
+        #print("data_o",data_o)
 
         data_json = json.loads(data_o)
         rid = response.meta["rid"]
@@ -101,6 +99,14 @@ class ClassPageParser:
             if Config.debug:
                 print(accurate_urls)
             Commons.commit_item(datatype=Config.class_type, id=ids, rid=[rid], title=titles, url=accurate_urls)
-            return self.articalparser.get_article_default_page(ids)
+            if Config.debug:
+                print("get_content_first_page:", ids)
+            for id in ids:
+                url = "https://www.zhihu.com/topic/" + id + "/hot"
+                if Config.debug:
+                    print(url)
+                yield Request(url=url, headers=Config.headers, meta={"rid": id},
+                              callback=self.articalparser.parse_article_default_page)
+
 
 
